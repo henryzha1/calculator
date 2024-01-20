@@ -1,20 +1,52 @@
-// business logic
-function add(number1, number2) {
-    return number1 + number2;
+function add(num1, num2) {
+    return num1 + num2;
 }
-function subtract(number1, number2) {
-    return number1 - number2;
-}
-function multiply(number1, number2) {
-    return number1 * number2;
-}
-function divide(number1, number2) {
-    return number1 / number2;
-}
-  
-// user interface logic 
-const num1 = parseInt(prompt("Enter a number:"));
-const num2 = parseInt(prompt("Enter another number:"));
 
-window.alert("The addition of your numbers equals " + add(num1,num2) + ". The subtraction of your numbers equals " + subtract(num1,num2) + ". The multiplication of your numbers equals " + multiply(num1,num2) + ". The division of your numbers equals " + divide(num1,num2) + ".");
-window.alert(num1 + " + " + num2 + " = " + add(num1,num2) + ", " + num1 + " - " + num2 + " = " +  + subtract(num1,num2) + ", " + num1 + " * " + num2 + " = " + multiply(num1,num2) + ", and " + num1 + " / " + num2 + " = " + divide(num1,num2) + ".");
+function subtract(num1, num2) {
+    return num1 - num2;
+}
+
+function multiply(num1, num2) {
+    return num1*num2;
+}
+function divide(num1, num2) {
+    return num1/num2;
+}
+
+
+function getAndCalculate(e) {
+    e.preventDefault();
+    let ans = [];
+    ans.push(parseInt(document.getElementById("num1").value));
+    ans.push(parseInt(document.getElementById("num2").value));
+    const operation = document.querySelector("input[name='operation']:checked").value;
+
+    if(operation==="add") {
+        ans.push(add(ans[0], ans[1]));
+    } else if(operation==="subtract") {
+        ans.push(subtract(ans[0], ans[1]));
+    } else if(operation==="multiply") {
+        ans.push(multiply(ans[0], ans[1]));
+    } else {
+        ans.push(divide(ans[0], ans[1]));
+    }
+
+    return ans;
+}
+
+function displayAnsAndHistory(history) {
+    let num1 = history[history.length-1][0];
+    let num2 = history[history.length-1][1];
+    let ans = history[history.length-1][2];
+    document.getElementById("ans").innerText = num1 + " " + num2 + " " + ans;
+}
+
+
+window.addEventListener("load", function(){
+    let history = [];
+    document.querySelector("form").addEventListener("submit", function(e) {
+        const ans = getAndCalculate(e);
+        history.push(ans);
+        displayAnsAndHistory(history);
+    });
+});
